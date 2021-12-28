@@ -25,10 +25,24 @@ stages:
       inputs:
         version: '$(dotnetSdkVersion)'
 
-    - task: Npm@1
-      displayName: 'Run npm install'
+    - task: NodeTool@0
+      displayName: Use node 8
       inputs:
-        verbose: false
+        versionSpec: "8.x"
+
+    - script: npm i -g npm@6.9.0 --force
+      displayName: Use npm version 6.9.0
+
+    # npm install
+    - script: |
+          cd common-npm-packages
+          npm run build
+      displayName: Build shared packages
+
+    - script: |
+          cd common-npm-packages
+          npm run test
+      displayName: Test shared packages
 
     - script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
       displayName: 'Compile Sass assets'
