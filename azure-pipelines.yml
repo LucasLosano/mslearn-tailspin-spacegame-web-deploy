@@ -25,20 +25,6 @@ stages:
       inputs:
         version: '$(dotnetSdkVersion)'
 
-    - task: NodeTool@0
-      displayName: Use node 8
-      inputs:
-        versionSpec: "8.x"
-
-    - script: npm i -g npm@6.9.0 --force
-      displayName: Use npm version 6.9.0
-
-    - script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
-      displayName: 'Compile Sass assets'
-
-    - task: gulp@1
-      displayName: 'Run gulp tasks'
-
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
       displayName: 'Write build info'
       workingDirectory: $(wwwrootDir)
